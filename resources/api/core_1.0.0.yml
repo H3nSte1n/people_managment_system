@@ -1,12 +1,22 @@
 openapi: 3.0.0
 info:
   title: 'People Management System API'
-  description: 'API for an people_management_system. It includes login and registration.'
+  description: 'API for a people_management_system.'
   contact:
     name: Henry Steinhauer
     email: Henrysteinhauer@t-online.de
     url: https://github.com/H3nSte1n
   version: '1.0.0'
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+security:
+  - bearerAuth: []
 
 paths:
   /api/v1/persons:
@@ -31,8 +41,9 @@ paths:
           description: Returns the selected Person.
           content:
             application/json:
-              schema:
-                $ref: './components/person.yml#definitions/Persons'
+              allOf:
+                - $ref: './components/person.yml#definitions/Person'
+                - $ref: './components/person.yml#definitions/Person--extended'
         400:
           $ref: './components/errors.yml#/components/responses/BadRequest'
         401:
@@ -55,7 +66,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: './components/person.yml#definitions/Person'
+                allOf:
+                  - $ref: './components/person.yml#definitions/Person'
+                  - $ref: './components/person.yml#definitions/Person--extended'
         400:
           $ref: './components/errors.yml#/components/responses/BadRequest'
         401:

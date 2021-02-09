@@ -1,5 +1,6 @@
 package com.people_managment_system
 
+import RoleBasedAuthorization
 import api.api
 import com.fasterxml.jackson.databind.*
 import com.fasterxml.jackson.datatype.joda.JodaModule
@@ -8,7 +9,6 @@ import config.DatabaseFactory
 import io.github.cdimascio.dotenv.dotenv
 import io.ktor.application.*
 import io.ktor.features.*
-import io.ktor.gson.*
 import io.ktor.http.*
 import io.ktor.http.content.*
 import io.ktor.jackson.*
@@ -33,8 +33,10 @@ fun Application.main() {
         method(HttpMethod.Put)
         method(HttpMethod.Delete)
         method(HttpMethod.Patch)
-        //  header(HttpHeaders.Authorization)
-        allowCredentials = true
+        method(HttpMethod.Post)
+        header(HttpHeaders.Authorization)
+        allowCredentials = false
+        allowNonSimpleContentTypes = true
         anyHost()
     }
 
@@ -57,11 +59,12 @@ fun Application.main() {
         swaggerUiPath = "/swagger-ui"
     }
 
+    install(RoleBasedAuthorization)
+
     routing {
         static("/static") {
             resources("api")
         }
-
         api()
     }
 }
