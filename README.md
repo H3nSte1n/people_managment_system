@@ -1,4 +1,4 @@
-# Turnierverwaltung - People Management System
+# Turnierverwaltung - People Management Service
 
 ![CI][ci]
 ![Code-Style][code-style]
@@ -26,7 +26,7 @@
 - set following env variables
 
 
-[ci]: https://github.com/H3nSte1n/people_managment_system/workflows/CI/badge.svg?style=flat
-[code-style]: https://github.com/H3nSte1n/people_managment_system/workflows/Code-Style/badge.svg?style=flat
-[coverage]: https://github.com/H3nSte1n/people_managment_system/blob/main/.github/badges/jacoco.svg
+[ci]: https://github.com/H3nSte1n/people-managment-service/workflows/CI/badge.svg?style=flat
+[code-style]: https://github.com/H3nSte1n/people-managment-service/workflows/Code-Style/badge.svg?style=flat
+[coverage]: https://github.com/H3nSte1n/people-managment-service/blob/main/.github/badges/jacoco.svg
 
