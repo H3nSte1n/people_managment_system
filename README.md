@@ -26,7 +26,7 @@
 - set following env variables
 
 
-[ci]: https://github.com/H3nSte1n/people-managment-service/workflows/CI/badge.svg?style=flat
-[code-style]: https://github.com/H3nSte1n/people-managment-service/workflows/Code-Style/badge.svg?style=flat
-[coverage]: https://github.com/H3nSte1n/people-managment-service/blob/main/.github/badges/jacoco.svg
+[ci]: https://github.com/H3nSte1n/people-management-service/workflows/CI/badge.svg?style=flat
+[code-style]: https://github.com/H3nSte1n/people-management-service/workflows/Code-Style/badge.svg?style=flat
+[coverage]: https://github.com/H3nSte1n/people-management-service/blob/main/.github/badges/jacoco.svg
 
