@@ -10,7 +10,7 @@ import io.ktor.routing.*
 import withRole
 
 fun Route.personenManagement() {
-    withRole {
+    withRole("admin") {
         delete("persons/{id}") {
             val personId = call.parameters["id"]
             val removedPerson = PersonController.removePerson(personId!!.toInt())
@@ -22,6 +22,15 @@ fun Route.personenManagement() {
             call.respond(addedPerson)
             call.request.header("Authorization")
         }
+        put("persons/{id}") {
+            val personId = call.parameters["id"]
+            val newPersonValues = call.receive<Person>()
+            val updatedPerson = PersonController.updatePerson(personId!!.toInt(), newPersonValues)
+            call.respond(updatedPerson)
+        }
+    }
+
+    withRole("admin", "user") {
         get("persons") {
             val storedPersons = PersonController.getAllPersons()
             call.respond(storedPersons)
@@ -30,12 +39,6 @@ fun Route.personenManagement() {
             val personId = call.parameters["id"]
             val storedPersons = PersonController.getPerson(personId!!.toInt())
             call.respond(storedPersons)
-        }
-        put("persons/{id}") {
-            val personId = call.parameters["id"]
-            val newPersonValues = call.receive<Person>()
-            val updatedPerson = PersonController.updatePerson(personId!!.toInt(), newPersonValues)
-            call.respond(updatedPerson)
         }
     }
 }

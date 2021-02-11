@@ -11,16 +11,19 @@ class RoleBasedAuthorization() {
 
     class Configuration
 
-    fun interceptPipeline(pipeline: ApplicationCallPipeline) {
+    fun interceptPipeline(pipeline: ApplicationCallPipeline, acceptedRoles: Array<out String>) {
         pipeline.insertPhaseAfter(ApplicationCallPipeline.Features, Authentication.ChallengePhase)
         pipeline.insertPhaseAfter(Authentication.ChallengePhase, AuthorizationPhase)
 
         pipeline.intercept(AuthorizationPhase) {
             val status = khttp.post(
-                url = "https://turnierverwaltung-auth.herokuapp.com/api/v1/auth",
+                //url = "https://turnierverwaltung-auth.herokuapp.com/api/v1/auth",
+                url = "http://localhost:8080/api/v1/auth",
                 headers = mapOf("Authorization" to call.request.header("Authorization")),
             )
+            val role = String(status.content)
             if (status.statusCode == HttpStatusCode.Unauthorized.value) throw AuthenticationException()
+            if (!acceptedRoles.contains(role)) throw AuthenticationException()
         }
     }
 
@@ -45,11 +48,11 @@ class AuthorizedRouteSelector(private val description: String) :
     override fun toString(): String = "(authorize $description)"
 }
 
-fun Route.withRole(build: Route.() -> Unit) = authorizedRoute(build = build)
+fun Route.withRole(vararg selectedRoles: String, build: Route.() -> Unit) = authorizedRoute(acceptedRoles = selectedRoles, build = build)
 
-private fun Route.authorizedRoute(build: Route.() -> Unit): Route {
+private fun Route.authorizedRoute(acceptedRoles: Array<out String>, build: Route.() -> Unit): Route {
     val authorizedRoute = createChild(AuthorizedRouteSelector(""))
-    application.feature(RoleBasedAuthorization).interceptPipeline(authorizedRoute)
+    application.feature(RoleBasedAuthorization).interceptPipeline(authorizedRoute, acceptedRoles)
     authorizedRoute.build()
     return authorizedRoute
 }
