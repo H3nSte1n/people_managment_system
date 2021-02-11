@@ -17,8 +17,7 @@ class RoleBasedAuthorization() {
 
         pipeline.intercept(AuthorizationPhase) {
             val status = khttp.post(
-                //url = "https://turnierverwaltung-auth.herokuapp.com/api/v1/auth",
-                url = "http://localhost:8080/api/v1/auth",
+                url = "https://turnierverwaltung-auth.herokuapp.com/api/v1/auth",
                 headers = mapOf("Authorization" to call.request.header("Authorization")),
             )
             val role = String(status.content)
